@@ -1,8 +1,10 @@
 package com.example.homework20.service;
 
+import com.example.homework20.exception.WrongEntryException;
 import com.example.homework20.model.Employee;
 import com.example.homework20.exception.EmployeeAlreadyAddedException;
 import com.example.homework20.exception.EmployeeNotFoundException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -18,9 +20,13 @@ public class EmployeeServiceImp implements EmployeeService {
         this.employeeBookMap = new HashMap<>();
     }
 
+
     @Override
     public Employee addEmployee(String firstName, String lastName, int department, double salary) {
-        Employee employee = new Employee(firstName, lastName, department, salary);
+        if(!StringUtils.isAlpha(firstName) || !StringUtils.isAlpha(lastName)) {
+            throw new WrongEntryException();
+        }
+        Employee employee = new Employee(StringUtils.capitalize(firstName), StringUtils.capitalize(lastName), department, salary);
 
         if (!employeeBookMap.containsKey(employee.getFullName())) {
             employeeBookMap.put(employee.getFullName(), employee);
