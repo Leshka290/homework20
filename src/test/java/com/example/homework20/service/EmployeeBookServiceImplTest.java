@@ -33,7 +33,8 @@ public class EmployeeBookServiceImplTest {
         Mockito.when(employeeService.findAll()).thenReturn(employees);
 
         assertEquals(employeeBookService.minEmployeeSalaryDep(DEPARTMENT)
-                , employees.stream().min(Comparator.comparing(Employee::getSalary)).orElseThrow());
+                , employees.stream().filter(e -> e.getDepartment() == DEPARTMENT)
+                        .min(Comparator.comparing(Employee::getSalary)).orElseThrow());
     }
 
     @Test
@@ -43,7 +44,8 @@ public class EmployeeBookServiceImplTest {
         Collection<Employee> employees = getEmployees();
         Mockito.when(employeeService.findAll()).thenReturn(employees);
 
-        assertEquals(employeeBookService.minEmployeeSalaryDep(DEPARTMENT)
-                , employees.stream().max(Comparator.comparing(Employee::getSalary)).orElseThrow());
+        assertEquals(employeeBookService.maxEmployeeSalaryDep(DEPARTMENT)
+                , employees.stream().filter(e -> e.getDepartment() == DEPARTMENT)
+                        .max(Comparator.comparing(Employee::getSalary)).orElseThrow());
     }
 }

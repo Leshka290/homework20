@@ -54,7 +54,8 @@ public class DepartmentServiceImplTest {
         when(employeeService.findAll()).thenReturn(employees);
 
         assertEquals(departmentService.minEmployeeSalaryDep(DEPARTMENT)
-                , employees.stream().min(Comparator.comparing(Employee::getSalary)).get().getSalary());
+                , employees.stream().filter(e -> e.getDepartment() == DEPARTMENT)
+                        .min(Comparator.comparing(Employee::getSalary)).get().getSalary());
     }
 
     @Test
@@ -63,7 +64,8 @@ public class DepartmentServiceImplTest {
         when(employeeService.findAll()).thenReturn(employees);
 
         assertEquals(departmentService.maxEmployeeSalaryDep(DEPARTMENT)
-                , employees.stream().max(Comparator.comparing(Employee::getSalary)).get().getSalary());
+                , employees.stream().filter(e -> e.getDepartment() == DEPARTMENT)
+                                .max(Comparator.comparing(Employee::getSalary)).get().getSalary());
     }
 
     @Test
