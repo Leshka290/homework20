@@ -12,21 +12,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class EmployeeServiceImp implements EmployeeService {
+public class EmployeeServiceImpl implements EmployeeService {
 
     private final Map<String, Employee> employeeBookMap;
 
-    public EmployeeServiceImp() {
+    public EmployeeServiceImpl() {
         this.employeeBookMap = new HashMap<>();
     }
 
 
     @Override
     public Employee addEmployee(String firstName, String lastName, int department, double salary) {
-        if(!StringUtils.isAlpha(firstName) || !StringUtils.isAlpha(lastName)) {
-            throw new WrongEntryException();
+        validateInput(firstName, lastName);
+        
+        Employee employee = new Employee(firstName, lastName, department, salary);
+
+        if (!employeeBookMap.containsKey(employee.getFullName())) {
+            employeeBookMap.put(employee.getFullName(), employee);
+            return employee;
+        } else {
+            throw new EmployeeAlreadyAddedException();
         }
-        Employee employee = new Employee(StringUtils.capitalize(firstName), StringUtils.capitalize(lastName), department, salary);
+    }
+
+    @Override
+    public Employee addEmployee(Employee employee) {
 
         if (!employeeBookMap.containsKey(employee.getFullName())) {
             employeeBookMap.put(employee.getFullName(), employee);
@@ -63,5 +73,11 @@ public class EmployeeServiceImp implements EmployeeService {
 
     private String fullName(String firstName, String lastName) {
         return firstName + " " + lastName;
+    }
+
+    private void validateInput(String firstName, String lastName) {
+        if(!StringUtils.isAlpha(firstName) || !StringUtils.isAlpha(lastName)) {
+            throw new WrongEntryException();
+        }
     }
 }

@@ -4,15 +4,18 @@ import com.example.homework20.exception.EmployeeNotFoundException;
 import com.example.homework20.model.Employee;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class EmployeeBookServiceImp implements EmployeeBookService {
+public class DepartmentServiceImpl implements DepartmentService{
 
-    private final EmployeeService employeeService;
+    EmployeeService employeeService;
 
-    public EmployeeBookServiceImp(EmployeeService employeeService) {
+    public DepartmentServiceImpl(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
@@ -31,18 +34,25 @@ public class EmployeeBookServiceImp implements EmployeeBookService {
     }
 
     @Override
-    public Employee minEmployeeSalaryDep(int department) {
+    public double minEmployeeSalaryDep(int department) {
         return employeeService.findAll().stream()
                 .filter(e -> e.getDepartment() == department)
                 .min(Comparator.comparing(Employee::getSalary))
-                .orElseThrow(EmployeeNotFoundException::new);
+                .orElseThrow(EmployeeNotFoundException::new).getSalary();
     }
 
     @Override
-    public Employee maxEmployeeSalaryDep(int department) {
+    public double maxEmployeeSalaryDep(int department) {
         return employeeService.findAll().stream()
                 .filter(e -> e.getDepartment() == department)
                 .max(Comparator.comparing(Employee::getSalary))
-                .orElseThrow(EmployeeNotFoundException::new);
+                .orElseThrow(EmployeeNotFoundException::new).getSalary();
+    }
+
+    @Override
+    public double sumEmployeeSalary(int department) {
+        return employeeService.findAll().stream()
+                .filter(e -> e.getDepartment() == department)
+                .mapToDouble(Employee::getSalary).sum();
     }
 }

@@ -8,9 +8,9 @@ import java.util.Map;
 
 public interface EmployeeBookService {
 
-    Map<Integer, List<Employee>> informationEmployees();
+    //Map<Integer, List<Employee>> informationEmployees();
 
-    Collection<Employee> informationEmployeesDepartment(int departmentId);
+    //Collection<Employee> informationEmployeesDepartment(int departmentId);
 
     Employee minEmployeeSalaryDep(int department);
 
