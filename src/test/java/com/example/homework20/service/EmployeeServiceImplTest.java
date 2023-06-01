@@ -34,11 +34,7 @@ public class EmployeeServiceImplTest {
         employeeBookMap.put(employee.getFullName(), employee);
         employeeService.addEmployee(employee);
 
-        try {
-            assertNull(employeeService.addEmployee(employee));
-        } catch (EmployeeAlreadyAddedException e) {
-            e.printStackTrace();
-        }
+        assertThrows(EmployeeAlreadyAddedException.class,() -> employeeService.addEmployee(employee));
     }
 
     @Test
@@ -61,20 +57,12 @@ public class EmployeeServiceImplTest {
 
     @Test
     public void removeEmployeeIndexOutTest() {
-        try {
-            assertNull(employeeService.removeEmployee("Ivan", "Ivanov"));
-        } catch (EmployeeNotFoundException e) {
-            e.printStackTrace();
-        }
+        assertThrows(EmployeeNotFoundException.class, () -> employeeService.removeEmployee("Ivan", "Ivanov"));
     }
 
     @Test
     public void notFoundEmployeeTest() {
-        try {
-            assertNull(employeeService.findEmployee("Ivan", "Ivanov"));
-        } catch (EmployeeNotFoundException e) {
-            e.printStackTrace();
-        }
+        assertThrows(EmployeeNotFoundException.class, () -> employeeService.findEmployee("Ivan", "Ivanov"));
     }
 
     @Test
